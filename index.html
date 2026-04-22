@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Dodum&family=Jua&display=swap">
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
@@ -19,55 +19,168 @@
   html, body { margin: 0; padding: 0; }
   body {
     font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-    background: #faf8f3;
-    color: #1c1917;
+    background: #f3f4f6;
+    color: #18181b;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'ss01', 'ss02';
   }
-  .app-bg { background: #faf8f3; min-height: 100vh; }
-  .font-display { font-family: 'Playfair Display', 'Noto Serif KR', serif; letter-spacing: -0.015em; }
-  .font-serif-kr { font-family: 'Noto Serif KR', serif; letter-spacing: -0.01em; }
-  .num-serif { font-family: 'Playfair Display', Georgia, serif; font-weight: 700; font-variant-numeric: lining-nums; }
-  .fade-in { animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+  .app-bg { 
+    background: #f3f4f6;
+    min-height: 100vh; 
+  }
+  .font-jua { font-family: 'Jua', 'Pretendard Variable', sans-serif; letter-spacing: -0.02em; }
+  .font-black-han { font-family: 'Black Han Sans', 'Pretendard Variable', sans-serif; letter-spacing: -0.01em; }
+  .font-num { font-family: 'Pretendard Variable', sans-serif; font-weight: 800; font-variant-numeric: tabular-nums lining-nums; letter-spacing: -0.04em; }
+  
+  .fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .slide-up { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
   }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Cards with chunky shadow (Duolingo/Brilliant style) */
+  .chunky-card {
+    background: #ffffff;
+    border-radius: 20px;
+    border: 2px solid #e5e7eb;
+    box-shadow: 0 4px 0 #e5e7eb;
+    transition: all 0.15s;
+  }
+  .chunky-card.pressable:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #e5e7eb;
+  }
+  
   .soft-card {
     background: #ffffff;
     border-radius: 16px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 4px 16px rgba(0,0,0,0.04);
+    border: 1.5px solid #e5e7eb;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
   }
+  
+  /* Hero gradient card */
+  .hero-card {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+    border-radius: 24px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -20%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(251,191,36,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-card::after {
+    content: '';
+    position: absolute;
+    bottom: -40%; left: -10%;
+    width: 250px; height: 250px;
+    background: radial-gradient(circle, rgba(167,139,250,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  
+  /* Buttons */
   .btn-primary {
-    background: #1c1917; color: #fff; font-weight: 600; border-radius: 10px;
-    padding: 11px 22px; transition: all 0.15s; cursor: pointer; border: none;
+    background: #18181b;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 14px;
+    padding: 14px 28px;
+    transition: all 0.15s;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 4px 0 #3f3f46;
+    font-size: 15px;
+    letter-spacing: -0.01em;
   }
-  .btn-primary:hover:not(:disabled) { background: #44403c; }
-  .btn-primary:disabled { background: #d6d3d1; color: #fff; cursor: not-allowed; }
+  .btn-primary:hover:not(:disabled) { background: #27272a; }
+  .btn-primary:active:not(:disabled) { 
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #3f3f46;
+  }
+  .btn-primary:disabled { 
+    background: #d4d4d8; color: #fff; cursor: not-allowed;
+    box-shadow: 0 4px 0 #a1a1aa;
+  }
   .btn-secondary {
-    background: #fff; color: #292524; font-weight: 500; border: 1px solid #e7e5e4;
-    border-radius: 10px; padding: 11px 20px; transition: all 0.15s; cursor: pointer;
+    background: #fff; color: #18181b; font-weight: 700;
+    border-radius: 14px; padding: 14px 24px;
+    border: 2px solid #e5e7eb;
+    box-shadow: 0 4px 0 #e5e7eb;
+    transition: all 0.15s; cursor: pointer;
+    font-size: 15px;
   }
-  .btn-secondary:hover { border-color: #a8a29e; background: #faf8f3; }
+  .btn-secondary:hover { background: #fafafa; }
+  .btn-secondary:active { 
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #e5e7eb;
+  }
+  
+  /* Choice buttons */
   .choice-btn {
-    width: 100%; text-align: left; padding: 14px 16px; border-radius: 12px;
-    background: #fff; border: 1.5px solid #e7e5e4; transition: all 0.15s;
-    display: flex; align-items: center; gap: 14px; cursor: pointer;
+    width: 100%; text-align: left; padding: 18px 20px; border-radius: 16px;
+    background: #fff; 
+    border: 2px solid #e5e7eb;
+    box-shadow: 0 3px 0 #e5e7eb;
+    transition: all 0.15s;
+    display: flex; align-items: center; gap: 16px; cursor: pointer;
   }
-  .choice-btn:hover:not(:disabled) { border-color: #a8a29e; background: #faf8f3; }
-  .choice-btn.selected { border-color: #1c1917; background: #f5f5f4; }
-  .choice-btn.correct { border-color: #10b981; background: #ecfdf5; color: #064e3b; }
-  .choice-btn.wrong { border-color: #ef4444; background: #fef2f2; color: #7f1d1d; }
+  .choice-btn:hover:not(:disabled) { background: #fafafa; }
+  .choice-btn:active:not(:disabled) { 
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #e5e7eb;
+  }
+  .choice-btn.selected { 
+    border-color: #4338ca; 
+    background: #eef2ff;
+    box-shadow: 0 3px 0 #4338ca;
+  }
+  .choice-btn.correct { 
+    border-color: #10b981; 
+    background: #ecfdf5; 
+    color: #064e3b;
+    box-shadow: 0 3px 0 #10b981;
+  }
+  .choice-btn.wrong { 
+    border-color: #ef4444; 
+    background: #fef2f2; 
+    color: #7f1d1d;
+    box-shadow: 0 3px 0 #ef4444;
+  }
   .choice-btn:disabled { cursor: default; }
   .choice-num {
-    flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
-    border: 1.5px solid currentColor; display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 14px;
+    flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+    border: 2px solid currentColor; display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 15px;
   }
-  .problem-img { width: 100%; max-width: 100%; height: auto; display: block; border-radius: 6px; }
+  
+  /* Problem image */
+  .problem-img { width: 100%; max-width: 100%; height: auto; display: block; border-radius: 8px; }
+  
+  /* Misc */
   button { -webkit-tap-highlight-color: transparent; }
   ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-thumb { background: #d6d3d1; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 3px; }
+  
+  /* Progress ring */
+  .progress-ring { transform: rotate(-90deg); }
+  
+  /* Difficulty pill */
+  .diff-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border-radius: 999px;
+    font-size: 12px; font-weight: 700;
+  }
 </style>
 </head>
 <body>
@@ -276,92 +389,162 @@ function DifficultyBadge({ d }) {
   };
   const s = map[d];
   return (
-    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold"
-      style={{ color: s.color, background: s.bg }}>
+    <span className="diff-pill" style={{ color: s.color, background: s.bg }}>
       <span className="w-1.5 h-1.5 rounded-full" style={{ background: s.dot }} />
       {s.label}
     </span>
   );
 }
 
-function StatCard({ icon, label, value }) {
+// Circular progress ring
+function ProgressRing({ pct, size = 120, stroke = 10, color = '#ffffff' }) {
+  const radius = (size - stroke) / 2;
+  const circ = 2 * Math.PI * radius;
+  const offset = circ - (pct / 100) * circ;
   return (
-    <div className="soft-card px-5 py-4">
-      <div className="flex items-center gap-2 text-stone-500 text-xs mb-1.5">{icon}<span className="font-medium">{label}</span></div>
-      <div className="text-2xl font-bold text-stone-900 num-serif tracking-tight">{value}</div>
-    </div>
-  );
-}
-
-function ActionCard({ onClick, disabled, icon, title, subtitle, color }) {
-  return (
-    <button onClick={onClick} disabled={disabled}
-      className={`flex items-center gap-3 soft-card p-4 text-left transition-all w-full ${disabled ? 'opacity-40 cursor-not-allowed' : 'hover:translate-y-[-1px] active:translate-y-0'}`}>
-      <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${color}15`, color }}>{icon}</div>
-      <div className="flex-1 min-w-0">
-        <div className="text-sm font-semibold text-stone-900">{title}</div>
-        <div className="text-xs text-stone-500 mt-0.5">{subtitle}</div>
-      </div>
-    </button>
+    <svg width={size} height={size} className="progress-ring">
+      <circle cx={size/2} cy={size/2} r={radius} 
+        fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth={stroke} />
+      <circle cx={size/2} cy={size/2} r={radius}
+        fill="none" stroke={color} strokeWidth={stroke}
+        strokeDasharray={circ} strokeDashoffset={offset}
+        strokeLinecap="round"
+        style={{ transition: 'stroke-dashoffset 0.7s ease-out' }} />
+    </svg>
   );
 }
 
 function HomeScreen({ onStart, stats, wrongCount, starredCount, onReview, onStats, onStarred }) {
   const difficulties = [
-    { key: 'easy', label: '하', korean: '기초', desc: '개념 확인', count: PROBLEMS.filter(p => p.difficulty === 'easy').length, accent: '#10b981', dotBg: '#ecfdf5' },
-    { key: 'medium', label: '중', korean: '표준', desc: '자료 분석', count: PROBLEMS.filter(p => p.difficulty === 'medium').length, accent: '#3b82f6', dotBg: '#eff6ff' },
-    { key: 'hard', label: '상', korean: '심화', desc: '종합 추론', count: PROBLEMS.filter(p => p.difficulty === 'hard').length, accent: '#ef4444', dotBg: '#fef2f2' }
+    { 
+      key: 'easy', label: '하', korean: '기초', desc: '개념 다지기',
+      count: PROBLEMS.filter(p => p.difficulty === 'easy').length,
+      bg: '#dcfce7', accent: '#16a34a', shadow: '#86efac', emoji: '🌱'
+    },
+    { 
+      key: 'medium', label: '중', korean: '표준', desc: '자료 분석',
+      count: PROBLEMS.filter(p => p.difficulty === 'medium').length,
+      bg: '#dbeafe', accent: '#2563eb', shadow: '#93c5fd', emoji: '🎯'
+    },
+    { 
+      key: 'hard', label: '상', korean: '심화', desc: '종합 추론',
+      count: PROBLEMS.filter(p => p.difficulty === 'hard').length,
+      bg: '#fee2e2', accent: '#dc2626', shadow: '#fca5a5', emoji: '🔥'
+    }
   ];
+  
   const totalAttempted = (stats.easy?.total || 0) + (stats.medium?.total || 0) + (stats.hard?.total || 0);
   const totalCorrect = (stats.easy?.correct || 0) + (stats.medium?.correct || 0) + (stats.hard?.correct || 0);
   const accuracy = totalAttempted > 0 ? Math.round((totalCorrect / totalAttempted) * 100) : 0;
+  const totalSolved = new Set(); // unique problems solved (we don't track this exactly, use total)
+  const progressPct = Math.min(100, Math.round((totalAttempted / PROBLEMS.length) * 100));
 
   return (
     <div className="app-bg">
-      <div className="max-w-4xl mx-auto px-5 py-10 sm:py-14">
-        <header className="mb-10 sm:mb-14">
-          <div className="flex items-center gap-2 mb-4 text-[11px] tracking-[0.25em] text-stone-500 uppercase font-display italic">
-            <span>Chemistry</span><span className="w-1 h-1 rounded-full bg-stone-400"></span><span>Vol. I</span>
+      <div className="max-w-2xl mx-auto px-5 pt-8 pb-16 sm:pt-12">
+        
+        {/* TOP HEADER */}
+        <header className="mb-6 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-jua text-xl shadow-md">통</div>
+            <div>
+              <div className="font-jua text-[17px] text-zinc-900 leading-none">통합과학</div>
+              <div className="text-[11px] text-zinc-500 mt-0.5">화학 결합 · 전기 전도성</div>
+            </div>
           </div>
-          <h1 className="font-display text-[44px] sm:text-[56px] font-bold text-stone-900 leading-[1.05] mb-4">
-            통합과학<br/>
-            <span className="italic text-stone-600 text-[38px] sm:text-[48px]">문제풀이</span>
-          </h1>
-          <div className="w-12 h-[2px] bg-stone-900 mb-4"></div>
-          <p className="text-stone-600 text-[15px] font-serif-kr">화학 결합과 물질의 성질 · 전기 전도성</p>
-          <p className="text-stone-500 mt-1.5 text-[13px]">
-            시도교육청 학력평가 기출 · 총 <span className="num-serif font-semibold text-stone-800">{PROBLEMS.length}</span>문항
-          </p>
+          <button onClick={onStats} className="w-10 h-10 rounded-2xl bg-white border-2 border-zinc-200 flex items-center justify-center text-zinc-700 hover:bg-zinc-50 transition-colors" style={{ boxShadow: '0 3px 0 #e5e7eb' }}>
+            <Icons.TrendUp size={18} />
+          </button>
         </header>
 
-        {totalAttempted > 0 && (
-          <div className="mb-10 grid grid-cols-3 gap-3">
-            <StatCard icon={<Icons.Target size={14} />} label="푼 문제" value={totalAttempted} />
-            <StatCard icon={<Icons.Check size={14} />} label="정답률" value={`${accuracy}%`} />
-            <StatCard icon={<Icons.Flame size={14} />} label="오답" value={wrongCount} />
+        {/* HERO PROGRESS CARD */}
+        <div className="hero-card p-7 sm:p-8 mb-5 slide-up">
+          <div className="relative z-10 flex items-center gap-6">
+            <div className="relative flex-shrink-0">
+              <ProgressRing pct={accuracy} size={110} stroke={9} color="#fbbf24" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <div className="font-num text-[32px] leading-none text-white">{accuracy}<span className="text-[18px] text-amber-300">%</span></div>
+                <div className="text-[10px] uppercase tracking-wider text-indigo-200 mt-1">정답률</div>
+              </div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-[12px] text-indigo-200 font-medium mb-1 tracking-wider uppercase">My Progress</div>
+              <h2 className="font-jua text-[22px] text-white leading-tight mb-3">
+                {totalAttempted === 0 ? '오늘도 화이팅!' : 
+                 accuracy >= 90 ? '완벽한 실력!' :
+                 accuracy >= 70 ? '잘 하고 있어요' :
+                 '꾸준히 풀어봐요'}
+              </h2>
+              <div className="flex items-baseline gap-4 text-white">
+                <div>
+                  <div className="font-num text-[22px] leading-none">{totalCorrect}</div>
+                  <div className="text-[11px] text-indigo-200 mt-0.5">맞힘</div>
+                </div>
+                <div className="w-px h-8 bg-white/20" />
+                <div>
+                  <div className="font-num text-[22px] leading-none">{totalAttempted}</div>
+                  <div className="text-[11px] text-indigo-200 mt-0.5">총 풀이</div>
+                </div>
+                <div className="w-px h-8 bg-white/20" />
+                <div>
+                  <div className="font-num text-[22px] leading-none text-amber-300">{wrongCount}</div>
+                  <div className="text-[11px] text-indigo-200 mt-0.5">오답</div>
+                </div>
+              </div>
+            </div>
           </div>
-        )}
+        </div>
 
-        <section className="mb-10">
-          <h2 className="text-[11px] font-display italic tracking-[0.2em] text-stone-500 uppercase mb-4">난이도 선택</h2>
-          <div className="grid sm:grid-cols-3 gap-3">
-            {difficulties.map(d => {
+        {/* DIFFICULTY SELECTION - Big visual cards */}
+        <section className="mb-6">
+          <div className="flex items-baseline justify-between mb-4 px-1">
+            <h2 className="font-jua text-[20px] text-zinc-900">난이도 선택</h2>
+            <span className="text-[12px] text-zinc-500">총 {PROBLEMS.length}문항</span>
+          </div>
+          
+          <div className="space-y-3">
+            {difficulties.map((d, i) => {
               const dStats = stats[d.key] || { total: 0, correct: 0 };
               const pct = dStats.total > 0 ? Math.round((dStats.correct / dStats.total) * 100) : null;
               const disabled = d.count === 0;
               return (
-                <button key={d.key} onClick={() => !disabled && onStart(d.key)} disabled={disabled}
-                  className={`group text-left soft-card p-6 transition-all ${disabled ? 'opacity-40 cursor-not-allowed' : 'hover:translate-y-[-2px] active:translate-y-0'}`}>
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold font-serif-kr"
-                      style={{ background: d.dotBg, color: d.accent }}>{d.label}</div>
-                    <Icons.ChevronR size={18} />
+                <button key={d.key} 
+                  onClick={() => !disabled && onStart(d.key)} disabled={disabled}
+                  className={`chunky-card pressable w-full p-5 text-left flex items-center gap-4 ${disabled ? 'opacity-40 cursor-not-allowed' : ''}`}
+                  style={{ 
+                    boxShadow: disabled ? '0 4px 0 #e5e7eb' : `0 4px 0 ${d.shadow}`,
+                    borderColor: disabled ? '#e5e7eb' : d.shadow,
+                    animationDelay: `${i * 0.08}s`
+                  }}>
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0"
+                    style={{ background: d.bg }}>
+                    {d.emoji}
                   </div>
-                  <div className="text-stone-900 font-semibold text-[15px] font-serif-kr">{d.korean}</div>
-                  <div className="text-sm text-stone-500 mt-0.5">{d.desc}</div>
-                  <div className="flex items-center justify-between text-[12px] mt-5 pt-4 border-t border-stone-100">
-                    <span className="text-stone-500"><span className="num-serif font-semibold">{d.count}</span> 문항</span>
-                    {pct !== null && <span className="font-semibold num-serif" style={{ color: d.accent }}>{pct}%</span>}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline gap-2 mb-1">
+                      <span className="font-jua text-[20px] text-zinc-900">{d.korean}</span>
+                      <span className="text-[12px] font-bold px-2 py-0.5 rounded-md" 
+                        style={{ background: d.bg, color: d.accent }}>{d.label}</span>
+                    </div>
+                    <div className="text-[13px] text-zinc-500 mb-2">{d.desc}</div>
+                    <div className="flex items-center gap-3 text-[12px]">
+                      <span className="text-zinc-600">
+                        <span className="font-num text-[15px]" style={{ color: d.accent }}>{d.count}</span>
+                        <span className="ml-1">문항</span>
+                      </span>
+                      {pct !== null && (
+                        <>
+                          <span className="text-zinc-300">·</span>
+                          <span className="text-zinc-600">
+                            정답률 <span className="font-num text-[15px]" style={{ color: d.accent }}>{pct}%</span>
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center"
+                    style={{ background: d.bg, color: d.accent }}>
+                    <Icons.ChevronR size={20} stroke={2.5} />
                   </div>
                 </button>
               );
@@ -369,22 +552,34 @@ function HomeScreen({ onStart, stats, wrongCount, starredCount, onReview, onStat
           </div>
         </section>
 
+        {/* QUICK ACTIONS - 2 column */}
         <section>
-          <h2 className="text-[11px] font-display italic tracking-[0.2em] text-stone-500 uppercase mb-4">복습 · 통계</h2>
-          <div className="grid sm:grid-cols-3 gap-3">
-            <ActionCard onClick={onReview} disabled={wrongCount === 0}
-              icon={<Icons.Rotate size={18} />} title="오답 다시 풀기"
-              subtitle={wrongCount > 0 ? `${wrongCount}문제 대기중` : "오답 없음"} color="#ef4444" />
-            <ActionCard onClick={onStarred} disabled={starredCount === 0}
-              icon={<Icons.Star size={18} />} title="즐겨찾기"
-              subtitle={starredCount > 0 ? `${starredCount}문제 저장됨` : "저장된 문제 없음"} color="#f59e0b" />
-            <ActionCard onClick={onStats} icon={<Icons.TrendUp size={18} />}
-              title="학습 통계" subtitle="진도 및 취약 개념" color="#6366f1" />
+          <h2 className="font-jua text-[20px] text-zinc-900 mb-3 px-1">복습</h2>
+          <div className="grid grid-cols-2 gap-3">
+            <button onClick={onReview} disabled={wrongCount === 0}
+              className={`chunky-card pressable p-5 text-left ${wrongCount === 0 ? 'opacity-40 cursor-not-allowed' : ''}`}
+              style={{ boxShadow: wrongCount === 0 ? '0 4px 0 #e5e7eb' : '0 4px 0 #fca5a5', borderColor: wrongCount === 0 ? '#e5e7eb' : '#fca5a5' }}>
+              <div className="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center text-2xl mb-3">📝</div>
+              <div className="font-jua text-[15px] text-zinc-900 mb-1">오답노트</div>
+              <div className="text-[12px] text-zinc-500">
+                {wrongCount > 0 ? <><span className="font-num text-red-600">{wrongCount}</span>문제 대기</> : '오답 없음'}
+              </div>
+            </button>
+            
+            <button onClick={onStarred} disabled={starredCount === 0}
+              className={`chunky-card pressable p-5 text-left ${starredCount === 0 ? 'opacity-40 cursor-not-allowed' : ''}`}
+              style={{ boxShadow: starredCount === 0 ? '0 4px 0 #e5e7eb' : '0 4px 0 #fcd34d', borderColor: starredCount === 0 ? '#e5e7eb' : '#fcd34d' }}>
+              <div className="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-2xl mb-3">⭐</div>
+              <div className="font-jua text-[15px] text-zinc-900 mb-1">즐겨찾기</div>
+              <div className="text-[12px] text-zinc-500">
+                {starredCount > 0 ? <><span className="font-num text-amber-600">{starredCount}</span>문제 저장됨</> : '저장된 문제 없음'}
+              </div>
+            </button>
           </div>
         </section>
 
-        <footer className="mt-14 pt-8 border-t border-stone-200 text-center">
-          <div className="font-display italic text-stone-400 text-xs">Based on National Mock Exams · Office of Education</div>
+        <footer className="mt-10 text-center">
+          <div className="text-[11px] text-zinc-400">시도교육청 학력평가 기출 · Made with care</div>
         </footer>
       </div>
     </div>
@@ -421,37 +616,38 @@ function QuizScreen({ problems, onExit, onComplete, title, onAnswerLogged, onSta
   return (
     <div className="app-bg">
       <div className="max-w-3xl mx-auto">
-        <header className="sticky top-0 z-20 bg-[#faf8f3]/92 backdrop-blur-md border-b border-stone-200/70 px-4 py-3 flex items-center gap-3">
-          <button onClick={onExit} className="p-2 -ml-2 rounded-lg hover:bg-stone-100 transition-colors"><Icons.ArrowLeft size={18} /></button>
+        <header className="sticky top-0 z-20 bg-zinc-50/95 backdrop-blur-md border-b-2 border-zinc-200 px-4 py-3 flex items-center gap-3">
+          <button onClick={onExit} className="w-10 h-10 -ml-2 rounded-xl hover:bg-zinc-100 transition-colors flex items-center justify-center"><Icons.ArrowLeft size={20} /></button>
           <div className="flex-1 min-w-0">
-            <div className="text-[11px] text-stone-500 font-display italic tracking-wider uppercase truncate">{title}</div>
-            <div className="text-[15px] font-semibold text-stone-900 num-serif">{idx + 1} <span className="text-stone-400 font-normal">/ {problems.length}</span></div>
+            <div className="text-[11px] text-zinc-500 font-bold tracking-wider uppercase truncate">{title}</div>
+            <div className="text-[16px] font-jua text-zinc-900">{idx + 1} <span className="text-zinc-400">/ {problems.length}</span></div>
           </div>
           <button onClick={() => onStarToggle(p.id)}
-            className={`p-2 rounded-lg transition-colors ${isStarred ? 'text-amber-500 bg-amber-50' : 'text-stone-400 hover:text-stone-600 hover:bg-stone-100'}`}>
+            className={`w-10 h-10 rounded-xl transition-colors flex items-center justify-center ${isStarred ? 'text-amber-500 bg-amber-50' : 'text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100'}`}>
             <Icons.Star size={20} fill={isStarred ? 'currentColor' : 'none'} />
           </button>
         </header>
 
-        <div className="h-[3px] bg-stone-100">
-          <div className="h-full bg-stone-900 transition-all duration-500 ease-out" style={{ width: `${((idx + 1) / problems.length) * 100}%` }} />
+        <div className="h-1 bg-zinc-100">
+          <div className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 transition-all duration-500 ease-out rounded-r-full" 
+            style={{ width: `${((idx + 1) / problems.length) * 100}%` }} />
         </div>
 
         <main className="px-4 sm:px-6 py-6 pb-36">
-          <div className="soft-card relative overflow-hidden">
+          <div className="chunky-card relative overflow-hidden">
             <div className={`absolute inset-0 z-10 ${showCanvas ? '' : 'pointer-events-none'}`}>
               <DrawingCanvas active={showCanvas} tool={tool} color={color} />
             </div>
-            <div className="p-5 sm:p-6 relative">
-              <div className="flex items-center gap-2.5 mb-4 text-xs flex-wrap">
+            <div className="p-5 sm:p-7 relative">
+              <div className="flex items-center gap-2.5 mb-5 text-xs flex-wrap">
                 <DifficultyBadge d={p.difficulty} />
-                <span className="text-stone-700 font-semibold font-serif-kr">{p.topic}</span>
-                <span className="ml-auto text-stone-400 text-[11px] font-display italic">{p.source}</span>
+                <span className="text-zinc-700 font-bold text-[13px]">{p.topic}</span>
+                <span className="ml-auto text-zinc-400 text-[11px] font-medium">{p.source}</span>
               </div>
-              <div className="rounded-lg overflow-hidden bg-white border border-stone-100 mb-5">
+              <div className="rounded-xl overflow-hidden bg-zinc-50 border-2 border-zinc-100 mb-6">
                 <img src={p.image} alt={`문제 ${idx + 1}`} className="problem-img" />
               </div>
-              <div className="space-y-2.5">
+              <div className="space-y-3">
                 {p.choices.map((choice, i) => {
                   const num = i + 1;
                   const isSelected = selected === num;
@@ -463,33 +659,36 @@ function QuizScreen({ problems, onExit, onComplete, title, onAnswerLogged, onSta
                   else if (isSelected) cls += " selected";
                   return (
                     <button key={i} onClick={() => !submitted && setSelected(num)} disabled={submitted} className={cls}>
-                      <span className="choice-num num-serif">{num}</span>
-                      <span className="text-[14.5px] leading-[1.5] flex-1 font-serif-kr">{choice}</span>
-                      {isCorrectChoice && <Icons.Check size={18} stroke={2.5} />}
-                      {isWrongSelected && <Icons.X size={18} stroke={2.5} />}
+                      <span className="choice-num font-num">{num}</span>
+                      <span className="text-[15px] leading-[1.5] flex-1 font-medium">{choice}</span>
+                      {isCorrectChoice && <Icons.Check size={20} stroke={3} />}
+                      {isWrongSelected && <Icons.X size={20} stroke={3} />}
                     </button>
                   );
                 })}
               </div>
               {submitted && (
-                <div className="mt-6 fade-in">
-                  <div className={`rounded-xl p-5 ${isCorrect ? 'bg-emerald-50 border border-emerald-100' : 'bg-red-50 border border-red-100'}`}>
-                    <div className="flex items-center gap-2.5 mb-4">
+                <div className="mt-7 fade-in">
+                  <div className={`rounded-2xl p-5 border-2 ${isCorrect ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'}`}
+                    style={{ boxShadow: isCorrect ? '0 4px 0 #6ee7b7' : '0 4px 0 #fca5a5' }}>
+                    <div className="flex items-center gap-3 mb-4">
                       {isCorrect ? (
                         <>
-                          <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white"><Icons.Check size={18} stroke={3} /></div>
-                          <span className="font-bold text-emerald-900 text-[15px] font-serif-kr">정답입니다</span>
+                          <div className="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-white"><Icons.Check size={22} stroke={3.5} /></div>
+                          <span className="font-jua text-emerald-900 text-[18px]">정답입니다!</span>
                         </>
                       ) : (
                         <>
-                          <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X size={18} stroke={3} /></div>
-                          <span className="font-bold text-red-900 text-[15px] font-serif-kr">오답입니다</span>
-                          <span className="text-sm text-red-700 ml-1 font-serif-kr">· 정답 <span className="num-serif font-bold">{p.answer}</span></span>
+                          <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center text-white"><Icons.X size={22} stroke={3.5} /></div>
+                          <div>
+                            <div className="font-jua text-red-900 text-[18px] leading-tight">오답입니다</div>
+                            <div className="text-[12px] text-red-700 mt-0.5 font-medium">정답: <span className="font-num font-bold">{p.answer}</span>번</div>
+                          </div>
                         </>
                       )}
                     </div>
-                    <div className="text-[11px] font-display italic text-stone-500 tracking-widest mb-2 uppercase">Explanation</div>
-                    <div className="text-[14px] text-stone-800 leading-[1.8] font-serif-kr" dangerouslySetInnerHTML={{ __html: p.explanation }} />
+                    <div className="text-[11px] font-bold text-zinc-500 tracking-widest mb-2 uppercase">해설</div>
+                    <div className="text-[14.5px] text-zinc-800 leading-[1.75]" dangerouslySetInnerHTML={{ __html: p.explanation }} />
                   </div>
                 </div>
               )}
@@ -497,39 +696,39 @@ function QuizScreen({ problems, onExit, onComplete, title, onAnswerLogged, onSta
           </div>
         </main>
 
-        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-stone-200 z-30">
+        <div className="fixed bottom-0 left-0 right-0 bg-white/97 backdrop-blur-md border-t-2 border-zinc-200 z-30">
           <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-2 flex-wrap">
-            <div className="flex items-center gap-1 bg-stone-100 rounded-xl p-1">
+            <div className="flex items-center gap-1 bg-zinc-100 rounded-2xl p-1">
               <button onClick={() => setShowCanvas(!showCanvas)}
-                className={`p-2 rounded-lg transition-colors ${showCanvas ? 'bg-stone-900 text-white' : 'text-stone-600 hover:bg-stone-200'}`}>
-                <Icons.Pencil size={16} />
+                className={`w-10 h-10 rounded-xl transition-colors flex items-center justify-center ${showCanvas ? 'bg-zinc-900 text-white' : 'text-zinc-600 hover:bg-zinc-200'}`}>
+                <Icons.Pencil size={18} />
               </button>
               {showCanvas && (
                 <>
-                  <div className="flex gap-1 px-1">
+                  <div className="flex gap-1 px-1.5">
                     {['#1e40af', '#dc2626', '#059669'].map(c => (
                       <button key={c} onClick={() => { setColor(c); setTool('pen'); }}
-                        className={`w-6 h-6 rounded-full transition-all ${tool === 'pen' && color === c ? 'ring-2 ring-stone-900 ring-offset-1 ring-offset-stone-100' : ''}`}
+                        className={`w-7 h-7 rounded-full transition-all ${tool === 'pen' && color === c ? 'ring-2 ring-zinc-900 ring-offset-2 ring-offset-zinc-100' : ''}`}
                         style={{ background: c }} />
                     ))}
                   </div>
                   <button onClick={() => setTool('eraser')}
-                    className={`p-2 rounded-lg transition-colors ${tool === 'eraser' ? 'bg-stone-900 text-white' : 'text-stone-600 hover:bg-stone-200'}`}>
-                    <Icons.Eraser size={16} />
+                    className={`w-10 h-10 rounded-xl transition-colors flex items-center justify-center ${tool === 'eraser' ? 'bg-zinc-900 text-white' : 'text-zinc-600 hover:bg-zinc-200'}`}>
+                    <Icons.Eraser size={18} />
                   </button>
                   <button onClick={() => window.__drawingApi?.undo()}
-                    className="p-2 rounded-lg text-stone-600 hover:bg-stone-200 transition-colors"><Icons.Undo size={16} /></button>
+                    className="w-10 h-10 rounded-xl text-zinc-600 hover:bg-zinc-200 transition-colors flex items-center justify-center"><Icons.Undo size={18} /></button>
                   <button onClick={() => window.__drawingApi?.clear()}
-                    className="p-2 rounded-lg text-stone-600 hover:bg-stone-200 transition-colors"><Icons.Trash size={16} /></button>
+                    className="w-10 h-10 rounded-xl text-zinc-600 hover:bg-zinc-200 transition-colors flex items-center justify-center"><Icons.Trash size={18} /></button>
                 </>
               )}
             </div>
             <div className="flex-1" />
             {!submitted ? (
-              <button onClick={submit} disabled={selected === null} className="btn-primary text-sm">답 확인</button>
+              <button onClick={submit} disabled={selected === null} className="btn-primary">답 확인</button>
             ) : (
-              <button onClick={next} className="btn-primary text-sm flex items-center gap-1.5">
-                {isLast ? '완료' : '다음 문제'}<Icons.ChevronR size={16} />
+              <button onClick={next} className="btn-primary flex items-center gap-2">
+                {isLast ? '완료' : '다음 문제'}<Icons.ChevronR size={18} stroke={2.5} />
               </button>
             )}
           </div>
@@ -542,24 +741,41 @@ function QuizScreen({ problems, onExit, onComplete, title, onAnswerLogged, onSta
 function CompletionScreen({ stats, onHome, onRestart }) {
   const total = stats.correct + stats.wrong;
   const pct = total > 0 ? Math.round((stats.correct / total) * 100) : 0;
-  const msg = pct === 100 ? "완벽합니다" : pct >= 80 ? "훌륭해요" : pct >= 60 ? "잘했어요" : "다시 도전해봐요";
+  const tier = pct === 100 ? { msg: '완벽해요!', emoji: '🎉', color: '#16a34a' } 
+            : pct >= 80 ? { msg: '훌륭해요!', emoji: '🌟', color: '#f59e0b' }
+            : pct >= 60 ? { msg: '잘 했어요', emoji: '👍', color: '#3b82f6' }
+            : { msg: '다시 도전!', emoji: '💪', color: '#ef4444' };
 
   return (
     <div className="app-bg min-h-screen flex items-center justify-center p-5">
-      <div className="max-w-md w-full soft-card p-8 text-center fade-in">
-        <div className="font-display italic text-stone-400 text-xs tracking-widest uppercase mb-2">Completed</div>
-        <h2 className="font-display text-3xl font-bold text-stone-900 mb-1">학습 완료</h2>
-        <p className="text-stone-500 text-sm mb-7 font-serif-kr">{msg}</p>
-        <div className="bg-stone-50 rounded-xl p-6 mb-6">
-          <div className="text-6xl font-bold text-stone-900 num-serif mb-2 tracking-tight">{pct}<span className="text-3xl text-stone-400">%</span></div>
-          <div className="flex items-center justify-center gap-6 text-sm mt-3">
-            <span className="flex items-center gap-1.5 font-serif-kr"><span className="w-2 h-2 rounded-full bg-emerald-500"></span><span className="text-stone-600">정답</span><span className="font-bold text-emerald-700 num-serif">{stats.correct}</span></span>
-            <span className="flex items-center gap-1.5 font-serif-kr"><span className="w-2 h-2 rounded-full bg-red-500"></span><span className="text-stone-600">오답</span><span className="font-bold text-red-700 num-serif">{stats.wrong}</span></span>
+      <div className="max-w-md w-full chunky-card p-8 text-center fade-in">
+        <div className="text-6xl mb-3">{tier.emoji}</div>
+        <h2 className="font-jua text-[28px] text-zinc-900 mb-1">{tier.msg}</h2>
+        <p className="text-zinc-500 text-[14px] mb-7">학습을 완료했어요</p>
+        
+        <div className="bg-zinc-50 rounded-2xl p-6 mb-6 border-2 border-zinc-100">
+          <div className="font-num text-[64px] leading-none mb-2 tracking-tight" style={{ color: tier.color }}>
+            {pct}<span className="text-[28px] text-zinc-400">%</span>
+          </div>
+          <div className="text-[12px] text-zinc-500 mb-4 font-medium">정답률</div>
+          <div className="flex items-center justify-center gap-6 text-[13px] pt-4 border-t border-zinc-200">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <span className="text-zinc-600">정답</span>
+              <span className="font-num text-emerald-700 text-[16px]">{stats.correct}</span>
+            </div>
+            <div className="w-px h-5 bg-zinc-300" />
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+              <span className="text-zinc-600">오답</span>
+              <span className="font-num text-red-700 text-[16px]">{stats.wrong}</span>
+            </div>
           </div>
         </div>
-        <div className="flex gap-2">
-          <button onClick={onRestart} className="btn-secondary flex-1 text-sm font-serif-kr">다시 풀기</button>
-          <button onClick={onHome} className="btn-primary flex-1 text-sm font-serif-kr">홈으로</button>
+        
+        <div className="flex gap-3">
+          <button onClick={onRestart} className="btn-secondary flex-1">다시 풀기</button>
+          <button onClick={onHome} className="btn-primary flex-1">홈으로</button>
         </div>
       </div>
     </div>
@@ -568,8 +784,11 @@ function CompletionScreen({ stats, onHome, onRestart }) {
 
 function StatsScreen({ stats, history, onBack }) {
   const byDiff = ['easy', 'medium', 'hard'];
-  const diffLabels = { easy: '하 · 기초', medium: '중 · 표준', hard: '상 · 심화' };
-  const diffColors = { easy: '#10b981', medium: '#3b82f6', hard: '#ef4444' };
+  const diffMeta = {
+    easy: { label: '하 · 기초', color: '#16a34a', bg: '#dcfce7', emoji: '🌱' },
+    medium: { label: '중 · 표준', color: '#2563eb', bg: '#dbeafe', emoji: '🎯' },
+    hard: { label: '상 · 심화', color: '#dc2626', bg: '#fee2e2', emoji: '🔥' }
+  };
 
   const total = byDiff.reduce((a, d) => a + (stats[d]?.total || 0), 0);
   const correct = byDiff.reduce((a, d) => a + (stats[d]?.correct || 0), 0);
@@ -586,41 +805,51 @@ function StatsScreen({ stats, history, onBack }) {
 
   return (
     <div className="app-bg min-h-screen">
-      <div className="max-w-2xl mx-auto px-5 py-6">
+      <div className="max-w-2xl mx-auto px-5 py-6 pb-12">
         <header className="mb-6 flex items-center gap-3">
-          <button onClick={onBack} className="p-2 -ml-2 rounded-lg hover:bg-stone-100 transition-colors"><Icons.ArrowLeft size={18} /></button>
-          <h1 className="font-display text-2xl font-bold text-stone-900">학습 통계</h1>
+          <button onClick={onBack} className="w-10 h-10 -ml-2 rounded-xl hover:bg-zinc-100 transition-colors flex items-center justify-center"><Icons.ArrowLeft size={20} /></button>
+          <h1 className="font-jua text-[24px] text-zinc-900">학습 통계</h1>
         </header>
 
-        <div className="soft-card p-6 mb-4">
-          <div className="text-[11px] font-display italic text-stone-500 tracking-widest uppercase mb-3">Overall</div>
+        <div className="chunky-card p-6 mb-4">
+          <div className="text-[11px] font-bold text-zinc-500 tracking-widest uppercase mb-3">전체 진도</div>
           <div className="flex items-baseline gap-2 mb-4">
-            <span className="text-6xl font-bold text-stone-900 num-serif tracking-tight">{pct}</span>
-            <span className="text-2xl text-stone-400 num-serif">%</span>
-            <span className="text-sm text-stone-500 ml-auto num-serif"><span className="font-semibold text-stone-700">{correct}</span> / {total}</span>
+            <span className="font-num text-[56px] leading-none text-zinc-900 tracking-tight">{pct}</span>
+            <span className="text-[24px] text-zinc-400 font-num">%</span>
+            <span className="text-[13px] text-zinc-500 ml-auto font-num">
+              <span className="font-bold text-zinc-700">{correct}</span> / {total}
+            </span>
           </div>
-          <div className="h-2 bg-stone-100 rounded-full overflow-hidden">
-            <div className="h-full bg-stone-900 transition-all duration-700 ease-out" style={{ width: `${pct}%` }} />
+          <div className="h-3 bg-zinc-100 rounded-full overflow-hidden">
+            <div className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 transition-all duration-700 ease-out rounded-full" style={{ width: `${pct}%` }} />
           </div>
         </div>
 
-        <div className="soft-card p-6 mb-4">
-          <div className="text-[11px] font-display italic text-stone-500 tracking-widest uppercase mb-5">By Difficulty</div>
+        <div className="chunky-card p-6 mb-4">
+          <div className="text-[11px] font-bold text-zinc-500 tracking-widest uppercase mb-5">난이도별 성과</div>
           <div className="space-y-5">
             {byDiff.map(d => {
               const s = stats[d] || { total: 0, correct: 0 };
               const dPct = s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0;
               const diffTotal = PROBLEMS.filter(p => p.difficulty === d).length;
+              const meta = diffMeta[d];
               return (
                 <div key={d}>
-                  <div className="flex items-baseline justify-between mb-1.5">
-                    <span className="text-[14px] font-semibold text-stone-800 font-serif-kr">{diffLabels[d]}</span>
-                    <span className="text-[11px] text-stone-500 num-serif"><span className="font-semibold text-stone-700">{s.correct}</span> / {s.total} · 전체 {diffTotal}문항</span>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg" style={{ background: meta.bg }}>{meta.emoji}</div>
+                      <span className="font-jua text-[15px] text-zinc-800">{meta.label}</span>
+                    </div>
+                    <span className="text-[12px] text-zinc-500 font-num">
+                      <span className="font-bold text-zinc-700">{s.correct}</span> / {s.total} · 전체 {diffTotal}
+                    </span>
                   </div>
-                  <div className="relative h-2 bg-stone-100 rounded-full overflow-hidden">
-                    <div className="h-full transition-all duration-700 ease-out" style={{ width: `${dPct}%`, background: diffColors[d] }} />
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1 relative h-2.5 bg-zinc-100 rounded-full overflow-hidden">
+                      <div className="h-full transition-all duration-700 ease-out rounded-full" style={{ width: `${dPct}%`, background: meta.color }} />
+                    </div>
+                    <span className="font-num text-[14px] min-w-[40px] text-right" style={{ color: meta.color }}>{dPct}%</span>
                   </div>
-                  <div className="text-[11px] font-semibold mt-1.5 num-serif" style={{ color: diffColors[d] }}>{dPct}%</div>
                 </div>
               );
             })}
@@ -628,17 +857,17 @@ function StatsScreen({ stats, history, onBack }) {
         </div>
 
         {topTopics.length > 0 && (
-          <div className="soft-card p-6">
+          <div className="chunky-card p-6">
             <div className="flex items-baseline justify-between mb-4">
-              <div className="text-[11px] font-display italic text-stone-500 tracking-widest uppercase">Weak Areas</div>
-              <div className="text-[11px] text-stone-400 font-serif-kr">자주 틀린 주제 Top {topTopics.length}</div>
+              <div className="text-[11px] font-bold text-zinc-500 tracking-widest uppercase">취약 개념</div>
+              <div className="text-[11px] text-zinc-400">자주 틀린 주제 Top {topTopics.length}</div>
             </div>
-            <div className="space-y-1">
+            <div className="space-y-2">
               {topTopics.map(([topic, count], i) => (
-                <div key={topic} className="flex items-center gap-3 py-2.5 border-b border-stone-100 last:border-0">
-                  <span className="w-7 h-7 rounded-full bg-red-50 text-red-600 text-xs font-bold flex items-center justify-center num-serif flex-shrink-0">{i+1}</span>
-                  <span className="flex-1 text-[14px] text-stone-800 font-serif-kr">{topic}</span>
-                  <span className="text-xs text-stone-500 num-serif"><span className="font-semibold text-red-600">{count}</span>회</span>
+                <div key={topic} className="flex items-center gap-3 p-3 rounded-xl bg-zinc-50">
+                  <span className="w-8 h-8 rounded-full bg-red-100 text-red-700 font-num text-[14px] flex items-center justify-center flex-shrink-0">{i+1}</span>
+                  <span className="flex-1 text-[14px] text-zinc-800 font-medium">{topic}</span>
+                  <span className="text-[12px] text-zinc-500"><span className="font-num font-bold text-red-600">{count}</span>회 오답</span>
                 </div>
               ))}
             </div>
@@ -646,7 +875,11 @@ function StatsScreen({ stats, history, onBack }) {
         )}
 
         {total === 0 && (
-          <div className="soft-card p-10 text-center text-stone-400 text-sm font-serif-kr">아직 푼 문제가 없습니다.</div>
+          <div className="chunky-card p-10 text-center text-zinc-400">
+            <div className="text-4xl mb-3">📚</div>
+            <div className="text-[14px] font-medium">아직 푼 문제가 없어요</div>
+            <div className="text-[12px] mt-1">홈에서 난이도를 선택해 시작해보세요</div>
+          </div>
         )}
       </div>
     </div>
@@ -712,7 +945,7 @@ function App() {
   };
   const completeQuiz = (sessionStats) => { setLastSessionStats(sessionStats); setView('completion'); };
 
-  if (view === 'loading') return <div className="app-bg flex items-center justify-center min-h-screen"><div className="text-stone-400 text-sm font-serif-kr">로딩 중...</div></div>;
+  if (view === 'loading') return <div className="app-bg flex items-center justify-center min-h-screen"><div className="text-stone-400 text-sm font-medium">로딩 중...</div></div>;
   if (view === 'home') return <HomeScreen onStart={startQuiz} stats={stats} wrongCount={wrongIds.length} starredCount={starredIds.length} onReview={startReview} onStarred={startStarred} onStats={() => setView('stats')} />;
   if (view === 'quiz') return <QuizScreen problems={currentProblems} title={quizTitle} onExit={() => setView('home')} onComplete={completeQuiz} onAnswerLogged={logAnswer} onStarToggle={toggleStar} starredIds={starredIds} />;
   if (view === 'completion') return <CompletionScreen stats={lastSessionStats} onHome={() => setView('home')} onRestart={() => { setCurrentProblems(prev => [...prev].sort(() => Math.random() - 0.5)); setView('quiz'); }} />;
