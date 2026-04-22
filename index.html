@@ -782,12 +782,27 @@ function CompletionScreen({ stats, onHome, onRestart }) {
   );
 }
 
-function StatsScreen({ stats, history, onBack }) {
+function StatsScreen({ stats, history, onBack, onResetDifficulty, onResetAll }) {
   const byDiff = ['easy', 'medium', 'hard'];
   const diffMeta = {
     easy: { label: '하 · 기초', color: '#16a34a', bg: '#dcfce7', emoji: '🌱' },
     medium: { label: '중 · 표준', color: '#2563eb', bg: '#dbeafe', emoji: '🎯' },
     hard: { label: '상 · 심화', color: '#dc2626', bg: '#fee2e2', emoji: '🔥' }
+  };
+
+  // Track which reset buttons are in "confirm" state
+  const [confirming, setConfirming] = useState(null); // 'easy' | 'medium' | 'hard' | 'all' | null
+
+  const handleResetClick = (target) => {
+    if (confirming === target) {
+      if (target === 'all') onResetAll();
+      else onResetDifficulty(target);
+      setConfirming(null);
+    } else {
+      setConfirming(target);
+      // Auto-cancel after 4 seconds if user doesn't confirm
+      setTimeout(() => setConfirming(c => c === target ? null : c), 4000);
+    }
   };
 
   const total = byDiff.reduce((a, d) => a + (stats[d]?.total || 0), 0);
@@ -826,23 +841,44 @@ function StatsScreen({ stats, history, onBack }) {
         </div>
 
         <div className="chunky-card p-6 mb-4">
-          <div className="text-[11px] font-bold text-zinc-500 tracking-widest uppercase mb-5">난이도별 성과</div>
+          <div className="flex items-center justify-between mb-5">
+            <div className="text-[11px] font-bold text-zinc-500 tracking-widest uppercase">난이도별 성과</div>
+            <div className="text-[10px] text-zinc-400">탭해서 초기화</div>
+          </div>
           <div className="space-y-5">
             {byDiff.map(d => {
               const s = stats[d] || { total: 0, correct: 0 };
               const dPct = s.total > 0 ? Math.round((s.correct / s.total) * 100) : 0;
               const diffTotal = PROBLEMS.filter(p => p.difficulty === d).length;
               const meta = diffMeta[d];
+              const isConfirming = confirming === d;
+              const hasData = s.total > 0;
               return (
                 <div key={d}>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg" style={{ background: meta.bg }}>{meta.emoji}</div>
+                  <div className="flex items-center justify-between mb-2 gap-2">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style={{ background: meta.bg }}>{meta.emoji}</div>
                       <span className="font-jua text-[15px] text-zinc-800">{meta.label}</span>
                     </div>
-                    <span className="text-[12px] text-zinc-500 font-num">
-                      <span className="font-bold text-zinc-700">{s.correct}</span> / {s.total} · 전체 {diffTotal}
-                    </span>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <span className="text-[12px] text-zinc-500 font-num whitespace-nowrap">
+                        <span className="font-bold text-zinc-700">{s.correct}</span> / {s.total}
+                      </span>
+                      {hasData && (
+                        isConfirming ? (
+                          <button onClick={() => handleResetClick(d)}
+                            className="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors">
+                            정말 초기화?
+                          </button>
+                        ) : (
+                          <button onClick={() => handleResetClick(d)}
+                            className="w-7 h-7 rounded-lg hover:bg-zinc-100 transition-colors flex items-center justify-center text-zinc-400 hover:text-red-500"
+                            title={`${meta.label} 기록 초기화`}>
+                            <Icons.Rotate size={14} />
+                          </button>
+                        )
+                      )}
+                    </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="flex-1 relative h-2.5 bg-zinc-100 rounded-full overflow-hidden">
@@ -857,7 +893,7 @@ function StatsScreen({ stats, history, onBack }) {
         </div>
 
         {topTopics.length > 0 && (
-          <div className="chunky-card p-6">
+          <div className="chunky-card p-6 mb-4">
             <div className="flex items-baseline justify-between mb-4">
               <div className="text-[11px] font-bold text-zinc-500 tracking-widest uppercase">취약 개념</div>
               <div className="text-[11px] text-zinc-400">자주 틀린 주제 Top {topTopics.length}</div>
@@ -879,6 +915,38 @@ function StatsScreen({ stats, history, onBack }) {
             <div className="text-4xl mb-3">📚</div>
             <div className="text-[14px] font-medium">아직 푼 문제가 없어요</div>
             <div className="text-[12px] mt-1">홈에서 난이도를 선택해 시작해보세요</div>
+          </div>
+        )}
+
+        {/* 전체 기록 초기화 — 화면 맨 아래, 위험도 있는 만큼 눈에 덜 띄게 */}
+        {total > 0 && (
+          <div className="mt-8 pt-6 border-t border-zinc-200">
+            <div className="text-center">
+              <div className="text-[11px] text-zinc-400 mb-3">
+                모든 난이도의 기록을 한 번에 지울 수 있어요
+                <br/>
+                <span className="text-zinc-300">(즐겨찾기는 유지됩니다)</span>
+              </div>
+              {confirming === 'all' ? (
+                <div className="flex items-center justify-center gap-2">
+                  <button onClick={() => setConfirming(null)}
+                    className="px-4 py-2 rounded-xl text-[13px] font-bold text-zinc-600 hover:bg-zinc-100 transition-colors">
+                    취소
+                  </button>
+                  <button onClick={() => handleResetClick('all')}
+                    className="px-5 py-2 rounded-xl text-[13px] font-bold bg-red-500 text-white hover:bg-red-600 transition-colors"
+                    style={{ boxShadow: '0 3px 0 #b91c1c' }}>
+                    정말 모두 초기화
+                  </button>
+                </div>
+              ) : (
+                <button onClick={() => handleResetClick('all')}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-[12px] font-bold text-zinc-500 hover:text-red-500 hover:bg-red-50 transition-colors">
+                  <Icons.Trash size={14} />
+                  전체 기록 초기화
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>
@@ -945,11 +1013,40 @@ function App() {
   };
   const completeQuiz = (sessionStats) => { setLastSessionStats(sessionStats); setView('completion'); };
 
+  // Reset only one difficulty's stats + its wrong/history entries
+  const resetDifficulty = async (difficulty) => {
+    const newStats = { ...stats, [difficulty]: { total: 0, correct: 0 } };
+    setStats(newStats);
+    await storage.set(STORAGE_KEYS.STATS, newStats);
+
+    // Remove wrong IDs that belong to this difficulty
+    const idsInDiff = new Set(PROBLEMS.filter(p => p.difficulty === difficulty).map(p => p.id));
+    const newWrong = wrongIds.filter(id => !idsInDiff.has(id));
+    setWrongIds(newWrong);
+    await storage.set(STORAGE_KEYS.WRONG, newWrong);
+
+    // Remove history entries of this difficulty
+    const newHistory = history.filter(h => h.difficulty !== difficulty);
+    setHistory(newHistory);
+    await storage.set(STORAGE_KEYS.HISTORY, newHistory);
+  };
+
+  // Full reset — clears stats, wrong list, history (keeps starred)
+  const resetAll = async () => {
+    const empty = { easy: { total: 0, correct: 0 }, medium: { total: 0, correct: 0 }, hard: { total: 0, correct: 0 } };
+    setStats(empty);
+    setWrongIds([]);
+    setHistory([]);
+    await storage.set(STORAGE_KEYS.STATS, empty);
+    await storage.set(STORAGE_KEYS.WRONG, []);
+    await storage.set(STORAGE_KEYS.HISTORY, []);
+  };
+
   if (view === 'loading') return <div className="app-bg flex items-center justify-center min-h-screen"><div className="text-stone-400 text-sm font-medium">로딩 중...</div></div>;
   if (view === 'home') return <HomeScreen onStart={startQuiz} stats={stats} wrongCount={wrongIds.length} starredCount={starredIds.length} onReview={startReview} onStarred={startStarred} onStats={() => setView('stats')} />;
   if (view === 'quiz') return <QuizScreen problems={currentProblems} title={quizTitle} onExit={() => setView('home')} onComplete={completeQuiz} onAnswerLogged={logAnswer} onStarToggle={toggleStar} starredIds={starredIds} />;
   if (view === 'completion') return <CompletionScreen stats={lastSessionStats} onHome={() => setView('home')} onRestart={() => { setCurrentProblems(prev => [...prev].sort(() => Math.random() - 0.5)); setView('quiz'); }} />;
-  if (view === 'stats') return <StatsScreen stats={stats} history={history} onBack={() => setView('home')} />;
+  if (view === 'stats') return <StatsScreen stats={stats} history={history} onBack={() => setView('home')} onResetDifficulty={resetDifficulty} onResetAll={resetAll} />;
   return null;
 }
 
